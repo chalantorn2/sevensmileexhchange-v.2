@@ -103,7 +103,7 @@
             <thead>
                 <tr class="header-bg">
                     <th class="px-4 py-2 w-20p">Currency Flag</th>
-                    <th class="px-4 py-2 w-20p">Country Name</th>
+                    <th class="px-4 py-2 w-20p">Currency Name</th>
                     <th class="px-4 py-2 w-20p">Denomination</th>
                     <th class="px-4 py-2 w-20p">Buying</th>
                     <th class="px-4 py-2 w-20p">Actions</th>
@@ -111,7 +111,7 @@
             </thead>
             <tbody>
             <?php
-            $conn = new mysqli("localhost", "root", "", "exchange_db");
+            $conn = new mysqli("localhost", "id22324983_chalantorn2", "NortNort_2", "id22324983_exchange_db");
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }

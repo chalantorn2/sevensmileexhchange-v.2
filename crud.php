@@ -1,7 +1,14 @@
 <?php
 
-$conn = new mysqli("localhost", "root", "", "exchange_db");
+$servername = "localhost";
+$username = "id22324983_chalantorn2";
+$password = "NortNort_2";
+$dbname = "id22324983_exchange_db";
 
+// สร้างการเชื่อมต่อ
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// ตรวจสอบการเชื่อมต่อ
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -59,3 +66,4 @@ if (isset($_GET['delete'])) {
 }
 
 $conn->close();
+?>

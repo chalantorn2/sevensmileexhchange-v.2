@@ -127,14 +127,14 @@
             <thead>
                 <tr class="header-bg">
                     <th class="px-4 py-2 w-40p">Currency Flag</th>
-                    <th class="px-4 py-2 w-40p">Country Name</th>
+                    <th class="px-4 py-2 w-40p">Currency Name</th>
                     <th class="px-4 py-2 w-60p font-32-bold">Denomination</th>
                     <th class="px-4 py-2 w-60p font-32-bold">Buying</th>
                 </tr>
             </thead>
             <tbody>
             <?php
-            $conn = new mysqli("localhost", "root", "", "exchange_db");
+            $conn = new mysqli("localhost", "id22324983_chalantorn2", "NortNort_2", "id22324983_exchange_db");
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
