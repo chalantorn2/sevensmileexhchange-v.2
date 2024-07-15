@@ -1,3 +1,6 @@
+<?php
+include 'config.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -85,11 +88,6 @@
             </thead>
             <tbody>
             <?php
-            $conn = new mysqli("localhost", "id22324983_chalantorn2", "NortNort_2", "id22324983_exchange_db");
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
-
             $result = $conn->query("SELECT * FROM currencies") or die($conn->error);
             $rowCount = 0;
             while ($row = $result->fetch_assoc()): 
@@ -108,7 +106,6 @@
             </tbody>
         </table>
     </div>
-
 </div>
 
 <div class="text-center button-container">

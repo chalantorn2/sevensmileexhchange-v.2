@@ -1,18 +1,5 @@
 <?php
-
-$servername = getenv('dpg-cqaa5llds78s739o8j90-a');
-$username = getenv('sevensmileexchange_user');
-$password = getenv('ynwfIPoM9v1WqkkxaGCMeOfkrZWXpUe7');
-$dbname = getenv('sevensmileexchange');
-
-// สร้างการเชื่อมต่อ
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// ตรวจสอบการเชื่อมต่อ
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
+include 'config.php';
 
 if (isset($_POST['add'])) {
     $country_name = $_POST['country_name'];
@@ -23,11 +10,17 @@ if (isset($_POST['add'])) {
     $target_file = $target_dir . basename($_FILES["currency_image"]["name"]);
 
     if (move_uploaded_file($_FILES["currency_image"]["tmp_name"], $target_file)) {
-        $sql = "INSERT INTO currencies (country_name, denomination, buying, currency_image) VALUES ('$country_name', '$denomination', '$buying', '$currency_image')";
-        if ($conn->query($sql) === TRUE) {
+        $sql = "INSERT INTO currencies (currency_image, country_name, denomination, buying) VALUES (:currency_image, :country_name, :denomination, :buying)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':currency_image', $currency_image);
+        $stmt->bindParam(':country_name', $country_name);
+        $stmt->bindParam(':denomination', $denomination);
+        $stmt->bindParam(':buying', $buying);
+        
+        if ($stmt->execute()) {
             header("Location: index.php");
         } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+            echo "Error: " . $sql . "<br>" . $conn->errorInfo()[2];
         }
     } else {
         echo "Sorry, there was an error uploading your file.";
@@ -44,27 +37,37 @@ if (isset($_POST['update'])) {
     $target_file = $target_dir . basename($_FILES["currency_image"]["name"]);
 
     if (move_uploaded_file($_FILES["currency_image"]["tmp_name"], $target_file)) {
-        $sql = "UPDATE currencies SET country_name='$country_name', denomination='$denomination', buying='$buying', currency_image='$currency_image' WHERE id=$id";
+        $sql = "UPDATE currencies SET currency_image=:currency_image, country_name=:country_name, denomination=:denomination, buying=:buying WHERE id=:id";
     } else {
-        $sql = "UPDATE currencies SET country_name='$country_name', denomination='$denomination', buying='$buying' WHERE id=$id";
+        $sql = "UPDATE currencies SET country_name=:country_name, denomination=:denomination, buying=:buying WHERE id=:id";
     }
 
-    if ($conn->query($sql) === TRUE) {
+    $stmt = $conn->prepare($sql);
+    if (isset($currency_image) && !empty($currency_image)) {
+        $stmt->bindParam(':currency_image', $currency_image);
+    }
+    $stmt->bindParam(':country_name', $country_name);
+    $stmt->bindParam(':denomination', $denomination);
+    $stmt->bindParam(':buying', $buying);
+    $stmt->bindParam(':id', $id);
+
+    if ($stmt->execute()) {
         header("Location: manage.php");
     } else {
-        echo "Error updating record: " . $conn->error;
+        echo "Error updating record: " . $conn->errorInfo()[2];
     }
 }
 
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
-    $sql = "DELETE FROM currencies WHERE id=$id";
-    if ($conn->query($sql) === TRUE) {
+    $sql = "DELETE FROM currencies WHERE id=:id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':id', $id);
+
+    if ($stmt->execute()) {
         header("Location: manage.php");
     } else {
-        echo "Error deleting record: " . $conn->error;
+        echo "Error deleting record: " . $conn->errorInfo()[2];
     }
 }
-
-$conn->close();
 ?>
