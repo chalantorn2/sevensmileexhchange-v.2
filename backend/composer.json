@@ -1,0 +1,6 @@
+{
+    "name": "web-exchange-backend",
+    "description": "A simple PHP app deployed on Heroku",
+    "require": {}
+  }
+  
