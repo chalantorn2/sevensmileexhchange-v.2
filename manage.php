@@ -1,6 +1,3 @@
-<?php
-include 'config.php';
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -114,11 +111,13 @@ include 'config.php';
             </thead>
             <tbody>
             <?php
-            $result = $conn->query("SELECT * FROM currencies") or die($conn->error);
-            $rowCount = 0;
-            while ($row = $result->fetch_assoc()): 
-                $rowClass = ($rowCount % 2 == 0) ? 'row-bg-1' : 'row-bg-2';
-                $rowCount++;
+            include 'config.php';
+            if ($conn) {
+                $result = $conn->query("SELECT * FROM currencies");
+                $rowCount = 0;
+                while ($row = $result->fetch(PDO::FETCH_ASSOC)): 
+                    $rowClass = ($rowCount % 2 == 0) ? 'row-bg-1' : 'row-bg-2';
+                    $rowCount++;
             ?>
                 <form action="crud.php" method="post" enctype="multipart/form-data">
                 <tr class="<?php echo $rowClass; ?>">
@@ -142,7 +141,12 @@ include 'config.php';
                     </td>
                 </tr>
                 </form>
-            <?php endwhile; ?>
+            <?php 
+                endwhile;
+            } else {
+                echo "Connection failed";
+            }
+            ?>
             </tbody>
         </table>
     </div>
