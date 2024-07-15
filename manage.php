@@ -19,7 +19,7 @@
             margin-top: 40px; /* ลดระยะห่างด้านบน */
         }
         img.flag {
-            width: 250px;
+            width: 230px; /* ปรับขนาดความกว้างเป็น 230 พิกเซล */
             height: auto;
         }
         .table-container {
@@ -151,6 +151,7 @@
 
     <div class="text-center button-container">
         <a href="index.php" class="bg-gray-500 text-white px-4 py-2 rounded">Back to List</a>
+        <a href="add.php" class="bg-green-500 text-white px-4 py-2 rounded">Add Currency</a> <!-- ปุ่ม Add Currency ที่ย้ายมา -->
     </div>
 </div>
 

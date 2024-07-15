@@ -15,19 +15,16 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: space-between; /* ทำให้ปุ่มอยู่ด้านล่างสุด */
         }
         .container {
             max-width: 1000px;
             width: 100%;
-            margin-top: 40px; /* ลดระยะห่างด้านบน */
+            flex-grow: 1; /* ขยาย container เพื่อให้เต็มพื้นที่ */
         }
         img.flag {
-            width: 250px;
+            width: 230px; /* ปรับขนาดความกว้างเป็น 230 พิกเซล */
             height: auto;
-        }
-        .table-container {
-            max-height: 80vh;
-            overflow-y: auto;
         }
         .table-auto {
             table-layout: fixed;
@@ -58,16 +55,9 @@
             background-color: #302c3a;
             color: white;
         }
-        /* ซ่อน Scrollbar */
-        .table-container::-webkit-scrollbar {
-            display: none;
-        }
-        .table-container {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
         .button-container {
-            margin-top: 10px; /* เพิ่มการจัดการระยะห่างด้านบนของปุ่ม */
+            width: 100%; /* ทำให้ปุ่มกว้างเท่าตาราง */
+            margin-bottom: 5px; /* เพิ่มการจัดการระยะห่างด้านล่างของปุ่ม */
         }
         .denomination-color {
             color: #ffba00;
@@ -75,53 +65,14 @@
         .buying-color {
             color: #10db00;
         }
-        .search-container {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        .search-input {
-            width: 1000px;
-            max-width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+        .full-width-button {
+            width: 100%; /* ทำให้ปุ่มกว้างเท่าตาราง */
         }
     </style>
-    <script>
-        function searchCountry() {
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("searchInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("currencyTable");
-            tr = table.getElementsByTagName("tr");
-
-            for (i = 1; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[1];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }       
-            }
-        }
-    </script>
 </head>
 <body>
 
 <div class="container mx-auto">
-    <div class="text-center mb-5">
-        <img src="uploads/exchangeLogo.png" alt="Logo" class="mx-auto h-auto w-48">
-    </div>
-
-    <div class="search-container">
-        <input type="text" id="searchInput" onkeyup="searchCountry()" placeholder="Search for country names..." class="search-input">
-    </div>
-
     <div class="table-container">
         <table id="currencyTable" class="table-auto w-full bg-white shadow-md rounded mb-5 text-center">
             <thead>
@@ -158,10 +109,10 @@
         </table>
     </div>
 
-    <div class="text-center button-container">
-        <a href="add.php" class="bg-green-500 text-white px-4 py-2 rounded mr-2">Add Currency</a>
-        <a href="manage.php" class="bg-blue-500 text-white px-4 py-2 rounded">Edit Currency</a>
-    </div>
+</div>
+
+<div class="text-center button-container">
+    <a href="manage.php" class="bg-blue-500 text-white font-bold px-4 py-2 rounded full-width-button" style="max-width: 1000px; margin: 0 auto;">Edit Currency</a>
 </div>
 
 </body>
