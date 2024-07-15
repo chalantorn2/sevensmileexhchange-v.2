@@ -88,24 +88,31 @@ include 'config.php';
             </thead>
             <tbody>
             <?php
-            $result = $conn->query("SELECT * FROM currencies") or die($conn->error);
-            $rowCount = 0;
-            while ($row = $result->fetch_assoc()): 
-                $rowClass = ($rowCount % 2 == 0) ? 'row-bg-1' : 'row-bg-2';
-                $rowCount++;
+            if ($conn) {
+                $result = $conn->query("SELECT * FROM currencies");
+                $rowCount = 0;
+                while ($row = $result->fetch(PDO::FETCH_ASSOC)): 
+                    $rowClass = ($rowCount % 2 == 0) ? 'row-bg-1' : 'row-bg-2';
+                    $rowCount++;
             ?>
-                <tr class="<?php echo $rowClass; ?>">
-                    <td class="border px-4 py-2">
-                        <img src="uploads/<?php echo $row['currency_image']; ?>" alt="Flag" class="flag mx-auto">
-                    </td>
-                    <td class="border px-4 py-2 font-32-bold"><?php echo $row['country_name']; ?></td>
-                    <td class="border px-4 py-2 font-32-bold denomination-color"><?php echo $row['denomination']; ?></td>
-                    <td class="border px-4 py-2 font-32-bold buying-color"><?php echo $row['buying']; ?></td>
-                </tr>
-            <?php endwhile; ?>
+                    <tr class="<?php echo $rowClass; ?>">
+                        <td class="border px-4 py-2">
+                            <img src="uploads/<?php echo $row['currency_image']; ?>" alt="Flag" class="flag mx-auto">
+                        </td>
+                        <td class="border px-4 py-2 font-32-bold"><?php echo $row['country_name']; ?></td>
+                        <td class="border px-4 py-2 font-32-bold denomination-color"><?php echo $row['denomination']; ?></td>
+                        <td class="border px-4 py-2 font-32-bold buying-color"><?php echo $row['buying']; ?></td>
+                    </tr>
+            <?php 
+                endwhile;
+            } else {
+                echo "Connection failed";
+            }
+            ?>
             </tbody>
         </table>
     </div>
+
 </div>
 
 <div class="text-center button-container">
