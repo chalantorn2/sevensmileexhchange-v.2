@@ -1,8 +1,8 @@
 <?php
-$servername = getenv('dpg-cqaa5llds78s739o8j90-a.oregon-postgres.render.com');
-$username = getenv('sevensmileexchange_user');
-$password = getenv('ynwfIPoM9v1WqkkxaGCMeOfkrZWXpUe7');
-$dbname = getenv('sevensmileexchange');
+$servername = getenv('DATABASE_HOST');
+$username = getenv('DATABASE_USER');
+$password = getenv('DATABASE_PASSWORD');
+$dbname = getenv('DATABASE_NAME');
 
 try {
     $conn = new PDO("pgsql:host=$servername;dbname=$dbname", $username, $password);
