@@ -1,9 +1,9 @@
 <?php
 
-$servername = "localhost";
-$username = "id22324983_chalantorn2";
-$password = "NortNort_2";
-$dbname = "id22324983_exchange_db";
+$servername = getenv('dpg-cqaa5llds78s739o8j90-a');
+$username = getenv('sevensmileexchange_user');
+$password = getenv('ynwfIPoM9v1WqkkxaGCMeOfkrZWXpUe7');
+$dbname = getenv('sevensmileexchange');
 
 // สร้างการเชื่อมต่อ
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -12,6 +12,7 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+
 
 if (isset($_POST['add'])) {
     $country_name = $_POST['country_name'];
