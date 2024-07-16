@@ -13,20 +13,20 @@ include 'config.php';
         body {
             font-family: 'Urbanist', sans-serif;
             background: linear-gradient(to bottom, white, #89cdf1);
-            min-height: 100vh;
+            min-height: 100vh; /* ทำให้ background เต็มจอ */
             margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            justify-content: space-between; /* ทำให้ปุ่มอยู่ด้านล่างสุด */
         }
         .container {
             max-width: 1000px;
             width: 100%;
-            flex-grow: 1;
+            flex-grow: 1; /* ขยาย container เพื่อให้เต็มพื้นที่ */
         }
         img.flag {
-            width: 230px;
+            width: 230px; /* ปรับขนาดความกว้างเป็น 230 พิกเซล */
             height: auto;
         }
         .table-auto {
@@ -59,8 +59,8 @@ include 'config.php';
             color: white;
         }
         .button-container {
-            width: 100%;
-            margin-bottom: 5px;
+            width: 100%; /* ทำให้ปุ่มกว้างเท่าตาราง */
+            margin-bottom: 5px; /* เพิ่มการจัดการระยะห่างด้านล่างของปุ่ม */
         }
         .denomination-color {
             color: #ffba00;
@@ -69,7 +69,7 @@ include 'config.php';
             color: #10db00;
         }
         .full-width-button {
-            width: 100%;
+            width: 100%; /* ทำให้ปุ่มกว้างเท่าตาราง */
         }
     </style>
 </head>
@@ -88,7 +88,10 @@ include 'config.php';
             </thead>
             <tbody>
             <?php
-            $result = $conn->query("SELECT * FROM currencies");
+            $conn = new PDO("pgsql:host=" . getenv('DATABASE_HOST') . ";dbname=" . getenv('DATABASE_NAME'), getenv('DATABASE_USER'), getenv('DATABASE_PASSWORD'));
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $result = $conn->query("SELECT * FROM currencies ORDER BY display_order ASC") or die($conn->errorInfo()[2]);
             $rowCount = 0;
             while ($row = $result->fetch(PDO::FETCH_ASSOC)): 
                 $rowClass = ($rowCount % 2 == 0) ? 'row-bg-1' : 'row-bg-2';
@@ -106,6 +109,7 @@ include 'config.php';
             </tbody>
         </table>
     </div>
+
 </div>
 
 <div class="text-center button-container">

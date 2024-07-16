@@ -23,25 +23,32 @@ if (isset($_POST['add'])) {
 
 if (isset($_POST['update_all'])) {
     $ids = $_POST['id'];
+    $country_names = $_POST['country_name'];
+    $denominations = $_POST['denomination'];
+    $buyings = $_POST['buying'];
+    $display_orders = $_POST['display_order'];
+    $currency_images = $_FILES['currency_image'];
 
     foreach ($ids as $id) {
-        $country_name = $_POST['country_name_' . $id];
-        $denomination = $_POST['denomination_' . $id];
-        $buying = $_POST['buying_' . $id];
-        $currency_image = $_FILES['currency_image_' . $id]['name'];
+        $country_name = $country_names[$id];
+        $denomination = $denominations[$id];
+        $buying = $buyings[$id];
+        $display_order = $display_orders[$id];
+        $currency_image = $currency_images['name'][$id];
         $target_dir = "uploads/";
-        $target_file = $target_dir . basename($_FILES["currency_image_" . $id]["name"]);
+        $target_file = $target_dir . basename($currency_images["name"][$id]);
 
-        if (!empty($currency_image) && move_uploaded_file($_FILES["currency_image_" . $id]["tmp_name"], $target_file)) {
-            $sql = "UPDATE currencies SET currency_image='$currency_image', country_name='$country_name', denomination='$denomination', buying='$buying' WHERE id=$id";
+        if (move_uploaded_file($currency_images["tmp_name"][$id], $target_file)) {
+            $sql = "UPDATE currencies SET currency_image='$currency_image', country_name='$country_name', denomination='$denomination', buying='$buying', display_order='$display_order' WHERE id=$id";
         } else {
-            $sql = "UPDATE currencies SET country_name='$country_name', denomination='$denomination', buying='$buying' WHERE id=$id";
+            $sql = "UPDATE currencies SET country_name='$country_name', denomination='$denomination', buying='$buying', display_order='$display_order' WHERE id=$id";
         }
 
         if (!$conn->exec($sql)) {
             echo "Error updating record: " . $conn->errorInfo()[2];
         }
     }
+
     header("Location: manage.php");
 }
 
@@ -54,4 +61,3 @@ if (isset($_GET['delete'])) {
         echo "Error deleting record: " . $conn->errorInfo()[2];
     }
 }
-?>
