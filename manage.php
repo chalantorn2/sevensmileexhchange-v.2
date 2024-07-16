@@ -1,3 +1,6 @@
+<?php
+include 'config.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -100,54 +103,49 @@
 
     <div class="table-container">
         <form action="crud.php" method="post" enctype="multipart/form-data">
-        <table class="table-auto w-full bg-white shadow-md rounded mb-5 text-center">
-            <thead>
-                <tr class="header-bg">
-                    <th class="px-4 py-2 w-20p">Currency Flag</th>
-                    <th class="px-4 py-2 w-20p">Currency Name</th>
-                    <th class="px-4 py-2 w-20p">Denomination</th>
-                    <th class="px-4 py-2 w-20p">Buying</th>
-                    <th class="px-4 py-2 w-20p">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            <?php
-            $conn = new mysqli("localhost", "id22324983_chalantorn2", "NortNort_2", "id22324983_exchange_db");
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
-
-            $result = $conn->query("SELECT * FROM currencies") or die($conn->error);
-            $rowCount = 0;
-            while ($row = $result->fetch_assoc()): 
-                $rowClass = ($rowCount % 2 == 0) ? 'row-bg-1' : 'row-bg-2';
-                $rowCount++;
-            ?>
-                <tr class="<?php echo $rowClass; ?>">
-                    <td class="border px-4 py-2">
-                        <img src="uploads/<?php echo $row['currency_image']; ?>" alt="Flag" class="flag mx-auto">
-                        <input type="file" name="currency_image[]" class="mt-1 p-2 w-full border rounded">
-                    </td>
-                    <td class="border px-4 py-2 font-regular">
-                        <input type="hidden" name="id[]" value="<?php echo $row['id']; ?>">
-                        <input type="text" name="country_name[]" value="<?php echo $row['country_name']; ?>" class="mt-1 p-2 w-full border rounded">
-                    </td>
-                    <td class="border px-4 py-2 font-regular">
-                        <input type="text" name="denomination[]" value="<?php echo $row['denomination']; ?>" class="mt-1 p-2 w-full border rounded">
-                    </td>
-                    <td class="border px-4 py-2 font-regular">
-                        <input type="text" name="buying[]" value="<?php echo $row['buying']; ?>" class="mt-1 p-2 w-full border rounded">
-                    </td>
-                    <td class="border px-4 py-2 actions-cell">
-                        <a href="crud.php?delete=<?php echo $row['id']; ?>" class="bg-red-500 text-white rounded">Delete</a>
-                    </td>
-                </tr>
-            <?php endwhile; ?>
-            </tbody>
-        </table>
-        <div class="text-center button-container">
-            <button type="submit" name="update_all" class="bg-blue-500 text-white rounded mt-2">Update All</button>
-        </div>
+            <table class="table-auto w-full bg-white shadow-md rounded mb-5 text-center">
+                <thead>
+                    <tr class="header-bg">
+                        <th class="px-4 py-2 w-20p">Currency Flag</th>
+                        <th class="px-4 py-2 w-20p">Currency Name</th>
+                        <th class="px-4 py-2 w-20p">Denomination</th>
+                        <th class="px-4 py-2 w-20p">Buying</th>
+                        <th class="px-4 py-2 w-20p">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php
+                $result = $conn->query("SELECT * FROM currencies");
+                $rowCount = 0;
+                while ($row = $result->fetch(PDO::FETCH_ASSOC)): 
+                    $rowClass = ($rowCount % 2 == 0) ? 'row-bg-1' : 'row-bg-2';
+                    $rowCount++;
+                ?>
+                    <tr class="<?php echo $rowClass; ?>">
+                        <td class="border px-4 py-2">
+                            <img src="uploads/<?php echo $row['currency_image']; ?>" alt="Flag" class="flag mx-auto">
+                            <input type="file" name="currency_image_<?php echo $row['id']; ?>" class="mt-1 p-2 w-full border rounded">
+                        </td>
+                        <td class="border px-4 py-2 font-regular">
+                            <input type="hidden" name="id[]" value="<?php echo $row['id']; ?>">
+                            <input type="text" name="country_name_<?php echo $row['id']; ?>" value="<?php echo $row['country_name']; ?>" class="mt-1 p-2 w-full border rounded">
+                        </td>
+                        <td class="border px-4 py-2 font-regular">
+                            <input type="text" name="denomination_<?php echo $row['id']; ?>" value="<?php echo $row['denomination']; ?>" class="mt-1 p-2 w-full border rounded">
+                        </td>
+                        <td class="border px-4 py-2 font-regular">
+                            <input type="text" name="buying_<?php echo $row['id']; ?>" value="<?php echo $row['buying']; ?>" class="mt-1 p-2 w-full border rounded">
+                        </td>
+                        <td class="border px-4 py-2 actions-cell">
+                            <a href="crud.php?delete=<?php echo $row['id']; ?>" class="bg-red-500 text-white rounded">Delete</a>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+                </tbody>
+            </table>
+            <div class="text-center button-container">
+                <button type="submit" name="update_all" class="bg-blue-500 text-white px-4 py-2 rounded">Update All</button>
+            </div>
         </form>
     </div>
 
