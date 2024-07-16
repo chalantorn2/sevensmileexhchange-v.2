@@ -1,6 +1,3 @@
-<?php
-include 'config.php';
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -91,6 +88,23 @@ include 'config.php';
             scrollbar-width: none;
         }
     </style>
+    <script>
+        function moveRowUp(rowId) {
+            var row = document.getElementById(rowId);
+            var prevRow = row.previousElementSibling;
+            if (prevRow && prevRow.tagName === 'TR') {
+                row.parentNode.insertBefore(row, prevRow);
+            }
+        }
+
+        function moveRowDown(rowId) {
+            var row = document.getElementById(rowId);
+            var nextRow = row.nextElementSibling;
+            if (nextRow && nextRow.tagName === 'TR') {
+                row.parentNode.insertBefore(nextRow, row);
+            }
+        }
+    </script>
 </head>
 <body>
 
@@ -106,28 +120,35 @@ include 'config.php';
             <table class="table-auto w-full bg-white shadow-md rounded mb-5 text-center">
                 <thead>
                     <tr class="header-bg">
+                        <th class="px-4 py-2 w-10p">Order</th>
                         <th class="px-4 py-2 w-20p">Currency Flag</th>
                         <th class="px-4 py-2 w-20p">Currency Name</th>
                         <th class="px-4 py-2 w-20p">Denomination</th>
                         <th class="px-4 py-2 w-20p">Buying</th>
-                        <th class="px-4 py-2 w-20p">Actions</th>
+                        <th class="px-4 py-2 w-10p">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                 <?php
-                $result = $conn->query("SELECT * FROM currencies");
+                include 'config.php';
+
+                $result = $conn->query("SELECT * FROM currencies ORDER BY id") or die($conn->error);
                 $rowCount = 0;
                 while ($row = $result->fetch(PDO::FETCH_ASSOC)): 
                     $rowClass = ($rowCount % 2 == 0) ? 'row-bg-1' : 'row-bg-2';
                     $rowCount++;
                 ?>
-                    <tr class="<?php echo $rowClass; ?>">
+                    <tr id="row-<?php echo $row['id']; ?>" class="<?php echo $rowClass; ?>">
+                        <td class="border px-4 py-2">
+                            <input type="hidden" name="id[]" value="<?php echo $row['id']; ?>">
+                            <button type="button" onclick="moveRowUp('row-<?php echo $row['id']; ?>')">↑</button>
+                            <button type="button" onclick="moveRowDown('row-<?php echo $row['id']; ?>')">↓</button>
+                        </td>
                         <td class="border px-4 py-2">
                             <img src="uploads/<?php echo $row['currency_image']; ?>" alt="Flag" class="flag mx-auto">
                             <input type="file" name="currency_image_<?php echo $row['id']; ?>" class="mt-1 p-2 w-full border rounded">
                         </td>
                         <td class="border px-4 py-2 font-regular">
-                            <input type="hidden" name="id[]" value="<?php echo $row['id']; ?>">
                             <input type="text" name="country_name_<?php echo $row['id']; ?>" value="<?php echo $row['country_name']; ?>" class="mt-1 p-2 w-full border rounded">
                         </td>
                         <td class="border px-4 py-2 font-regular">
@@ -144,14 +165,11 @@ include 'config.php';
                 </tbody>
             </table>
             <div class="text-center button-container">
-                <button type="submit" name="update_all" class="bg-blue-500 text-white px-4 py-2 rounded">Update All</button>
+                <a href="index.php" class="bg-gray-500 text-white px-4 py-2 rounded">Back to List</a>
+                <a href="add.php" class="bg-green-500 text-white px-4 py-2 rounded">Add Currency</a>
+                <button type="submit" name="update_all" class="bg-blue-500 text-white px-4 py-2 rounded">Update</button>
             </div>
         </form>
-    </div>
-
-    <div class="text-center button-container">
-        <a href="index.php" class="bg-gray-500 text-white px-4 py-2 rounded">Back to List</a>
-        <a href="add.php" class="bg-green-500 text-white px-4 py-2 rounded">Add Currency</a>
     </div>
 </div>
 

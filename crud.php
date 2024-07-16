@@ -22,22 +22,25 @@ if (isset($_POST['add'])) {
 }
 
 if (isset($_POST['update_all'])) {
-    foreach ($_POST['id'] as $id) {
-        $country_name = $_POST["country_name_$id"];
-        $denomination = $_POST["denomination_$id"];
-        $buying = $_POST["buying_$id"];
-        $currency_image = $_FILES["currency_image_$id"]['name'];
-        $target_dir = "uploads/";
-        $target_file = $target_dir . basename($_FILES["currency_image_$id"]["name"]);
+    $ids = $_POST['id'];
 
-        if ($currency_image) {
-            move_uploaded_file($_FILES["currency_image_$id"]["tmp_name"], $target_file);
+    foreach ($ids as $id) {
+        $country_name = $_POST['country_name_' . $id];
+        $denomination = $_POST['denomination_' . $id];
+        $buying = $_POST['buying_' . $id];
+        $currency_image = $_FILES['currency_image_' . $id]['name'];
+        $target_dir = "uploads/";
+        $target_file = $target_dir . basename($_FILES["currency_image_" . $id]["name"]);
+
+        if (!empty($currency_image) && move_uploaded_file($_FILES["currency_image_" . $id]["tmp_name"], $target_file)) {
             $sql = "UPDATE currencies SET currency_image='$currency_image', country_name='$country_name', denomination='$denomination', buying='$buying' WHERE id=$id";
         } else {
             $sql = "UPDATE currencies SET country_name='$country_name', denomination='$denomination', buying='$buying' WHERE id=$id";
         }
 
-        $conn->exec($sql);
+        if (!$conn->exec($sql)) {
+            echo "Error updating record: " . $conn->errorInfo()[2];
+        }
     }
     header("Location: manage.php");
 }
