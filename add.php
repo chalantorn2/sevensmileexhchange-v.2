@@ -10,7 +10,8 @@ if (isset($_POST['add'])) {
     $target_file = $target_dir . basename($_FILES["currency_image"]["name"]);
 
     if (move_uploaded_file($_FILES["currency_image"]["tmp_name"], $target_file)) {
-        $sql = "INSERT INTO currencies (currency_image, country_name, denomination, buying) VALUES ('$currency_image', '$country_name', '$denomination', '$buying')";
+        $sql = "INSERT INTO currencies (currency_image, country_name, denomination, buying, display_order) 
+                VALUES ('$currency_image', '$country_name', '$denomination', '$buying', (SELECT COALESCE(MAX(display_order), 0) + 1 FROM currencies))";
         if ($conn->exec($sql)) {
             header("Location: index.php");
         } else {
@@ -21,6 +22,7 @@ if (isset($_POST['add'])) {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -87,7 +89,7 @@ if (isset($_POST['add'])) {
                 <input type="file" name="currency_image" id="currency_image" required>
             </div>
             <div class="form-group">
-                <label for="country_name">Country Name</label>
+                <label for="country_name">Currency Name</label>
                 <input type="text" name="country_name" id="country_name" required>
             </div>
             <div class="form-group">
