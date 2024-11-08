@@ -1,9 +1,17 @@
 <?php
-$host = 'aws-0-us-east-1.pooler.supabase.com';
-$port = '6543';
-$dbname = 'postgres';
-$user = 'postgres.fzmwpiymjgoaqypkivxm';
-$password = 'Seven@Ex_241108';
+// เรียกใช้ autoload เพื่อให้ phpdotenv ทำงาน
+require_once 'vendor/autoload.php';
+
+// โหลดค่า .env
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+// ใช้ environment variables จากไฟล์ .env
+$host = $_ENV['DB_HOST'];
+$port = $_ENV['DB_PORT'];
+$dbname = $_ENV['DB_NAME'];
+$user = $_ENV['DB_USER'];
+$password = $_ENV['DB_PASSWORD'];
 
 try {
     $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;sslmode=require";
