@@ -1,16 +1,19 @@
 <?php
-$servername = getenv('DATABASE_HOST');
-$username = getenv('DATABASE_USER');
-$password = getenv('DATABASE_PASSWORD');
-$dbname = getenv('DATABASE_NAME');
+$host = 'aws-0-us-east-1.pooler.supabase.com';
+$port = '6543';
+$dbname = 'postgres';
+$user = 'postgres.fzmwpiymjgoaqypkivxm';
+$password = 'Seven@Ex_241108';
 
 try {
-    // เพิ่ม sslmode=require เพื่อบังคับใช้ SSL ในการเชื่อมต่อ
-    $conn = new PDO("pgsql:host=$servername;dbname=$dbname;sslmode=require", $username, $password);
-    // ตั้งค่าให้ PDO แสดงข้อผิดพลาด
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;sslmode=require";
+    $options = [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ];
+
+    $pdo = new PDO($dsn, $user, $password, $options);
 } catch (PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
-    die();
+    echo "การเชื่อมต่อล้มเหลว: " . $e->getMessage();
 }
 ?>
